@@ -17,7 +17,11 @@ app.get('/events', (request, response) => {
   const events = Event
   .findAll()
   .then((events) => {
-    response.json(events)
+    response.json({
+      title: events.title,
+      startDate: events.startDate,
+      endDate: events.endDate
+    })
   })
   .catch((err) => {
     console.error(err)
