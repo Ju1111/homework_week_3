@@ -29,9 +29,13 @@ app.get('/events', (request, response) => {
 app.get('/events(:id)', (request, response) => {
   const events = Event
   .findById(request.params.id)
-  .then((event) => {
-    if (event) {
-      response.json(event)
+  .then((events) => {
+    if (events) {
+      response.json({
+        title: events.title,
+        startDate: events.startDate,
+        endDate: events.endDate
+      })
     } else {
       response.status(404)
       response.json({message:'Event not found.'})
