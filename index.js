@@ -44,6 +44,22 @@ app.get('/events(:id)', (request, response) => {
   })
 })
 
+app.post('/events', (request, response) => {
+  const event = request.body
+  console.log(event)
+  // insert new event into the database
+  Event
+  .create(event)
+  .then(entity => {
+    response.status(201).send(entity)
+    })
+  .catch(err => {
+    response.status(422)
+    response.json({ message: err.message })
+    })
+})
+
+
 app.listen(port, () => {
   console.log(`
     Server is listening on ${port}.
