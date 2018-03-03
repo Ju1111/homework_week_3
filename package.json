@@ -1,0 +1,21 @@
+{
+  "name": "Events",
+  "version": "1.0.0",
+  "description": "RESTful API for Events",
+  "main": "index.js",
+  "repository": "https://github.com/Ju1111/homework_week_3",
+  "author": "Julia Schneider",
+  "license": "MIT",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon --inspect .",
+    "sequelize": "node_modules/.bin/sequelize"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.35.1",
+    "sequelize-cli": "^4.0.0"
+  }
+}
