@@ -27,11 +27,6 @@ app.get('/events', (request, response) => {
   })
   .then((events) => {
     response.json(events)
-    //   {
-    //   title: events.title,
-    //   startDate: events.startDate,
-    //   endDate: events.endDate
-    // })
   })
   .catch((err) => {
     console.error(err)
@@ -42,14 +37,19 @@ app.get('/events', (request, response) => {
 
 app.get('/events(:id)', (request, response) => {
   const events = Event
-  .findById(request.params.id)
+  // const eventID = request.params.id
+  .findAll({
+    attributes: ['title', 'startDate', 'endDate'],
+    where: {
+      startDate: {
+        [Op.gt]: new Date()
+      },
+      id: request.params.id,
+    }
+  })
   .then((events) => {
     if (events) {
-      response.json({
-        title: events.title,
-        startDate: events.startDate,
-        endDate: events.endDate
-      })
+      response.json(events)
     } else {
         response.status(404)
         response.json({message:'Event not found.'})
