@@ -7,8 +7,6 @@ const Op = Sequelize.Op
 const port = process.env.PORT || 11111
 const bodyParser = require('body-parser')
 
-// const { Event } = db
-
 app.use(bodyParser.json())
 
 app.get('/', (request, response) => {
@@ -64,15 +62,23 @@ app.get('/events(:id)', (request, response) => {
 app.post('/events', (request, response) => {
   const event = request.body
   console.log(event)
-  Event
-  .create(event)
-  .then(entity => {
-    response.status(201).send(entity)
-    })
-  .catch(err => {
-    response.status(422)
-    response.json({ message: err.message })
-    })
+  if (new Date(event.startDate) > new Date(event.endDate)) {
+    response.status(406)
+    response.json({message: 'Oooops! Are you sure the start date is before the end date?'})
+  } else if (new Date(event.startDate) < new Date()) {
+      response.status(406)
+      response.json({message: 'Sorry, but I only accepts events that take place in the future!'})
+  } else {
+      Event
+        .create(event)
+        .then(entity => {
+          response.status(201).send(entity)
+        })
+        .catch(err => {
+            response.status(422)
+            response.json({ message: err.message })
+        })
+    }
 })
 
 app.patch('/events/:id', (request, response) => {
