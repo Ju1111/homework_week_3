@@ -78,7 +78,6 @@ app.post('/events', (request, response) => {
 })
 
 app.patch('/events/:id', (request, response) => {
-  const eventId = Event(request.params.id)
   const updates = request.body
 
   Event.findById(request.params.id)
