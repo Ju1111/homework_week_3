@@ -37,7 +37,6 @@ app.get('/events', (request, response) => {
 
 app.get('/events(:id)', (request, response) => {
   const events = Event
-  // const eventID = request.params.id
   .findAll({
     attributes: ['title', 'startDate', 'endDate'],
     where: {
@@ -48,7 +47,7 @@ app.get('/events(:id)', (request, response) => {
     }
   })
   .then((events) => {
-    if (events) {
+    if (events.length !== 0) {
       response.json(events)
     } else {
         response.status(404)
@@ -65,7 +64,6 @@ app.get('/events(:id)', (request, response) => {
 app.post('/events', (request, response) => {
   const event = request.body
   console.log(event)
-  // insert new event into the database
   Event
   .create(event)
   .then(entity => {
