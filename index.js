@@ -77,6 +77,26 @@ app.post('/events', (request, response) => {
     })
 })
 
+app.put('/events/:id', (request, response) => {
+  const eventId = Event(request.params.id)
+  const updates = request.body
+
+  Event.findById(request.params.id)
+    .then(entity => {
+      return entity.update(updates)
+    })
+    .then(final => {
+      response.send(final)
+    })
+    .catch(error => {
+      response.status(500).send({
+        message: `Something went wrong`,
+        error
+      })
+    })
+})
+
+
 
 app.listen(port, () => {
   console.log(`
