@@ -1,6 +1,8 @@
 const express = require('express')
 const { Event } = require('./models')
 const app = express()
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op
 
 const port = process.env.PORT || 11111
 const bodyParser = require('body-parser')
@@ -10,18 +12,26 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 app.get('/', (request, response) => {
-  res.json({ message: 'Welcome to my events API' })
+  response.json({ message: 'Welcome to my events API' })
 })
 
 app.get('/events', (request, response) => {
   const events = Event
-  .findAll()
+  .findAll({
+    attributes: ['title', 'startDate', 'endDate'],
+    where: {
+      startDate: {
+        [Op.gt]: new Date()
+      }
+    }
+  })
   .then((events) => {
-    response.json({
-      title: events.title,
-      startDate: events.startDate,
-      endDate: events.endDate
-    })
+    response.json(events)
+    //   {
+    //   title: events.title,
+    //   startDate: events.startDate,
+    //   endDate: events.endDate
+    // })
   })
   .catch((err) => {
     console.error(err)
@@ -41,8 +51,8 @@ app.get('/events(:id)', (request, response) => {
         endDate: events.endDate
       })
     } else {
-      response.status(404)
-      response.json({message:'Event not found.'})
+        response.status(404)
+        response.json({message:'Event not found.'})
     }
   })
   .catch((err) => {
