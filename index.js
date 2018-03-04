@@ -77,7 +77,7 @@ app.post('/events', (request, response) => {
     })
 })
 
-app.put('/events/:id', (request, response) => {
+app.patch('/events/:id', (request, response) => {
   const eventId = Event(request.params.id)
   const updates = request.body
 
@@ -96,7 +96,23 @@ app.put('/events/:id', (request, response) => {
     })
 })
 
-
+app.delete('/events/:id', (request, response) => {
+  Event.findById(request.params.id)
+  .then(entity => {
+    return entity.destroy()
+  })
+  .then(() => {
+    response.send({
+      message: 'You succesfully deleted the event.'
+    })
+  })
+  .catch(error => {
+    response.status(500).send({
+      message: `Something went wrong`,
+      error
+    })
+  })
+})
 
 app.listen(port, () => {
   console.log(`
